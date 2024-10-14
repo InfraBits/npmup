@@ -1,0 +1,40 @@
+---
+name: infrabits/npmup
+description: Automatic update of `pip` dependancies
+
+secrets:
+  github-access-token:
+    required: false
+    type: string
+  github-app-id:
+    required: false
+    type: int
+  github-app-key:
+    required: false
+    type: string
+
+runs:
+  using: "composite"
+  steps:
+    - name: Set up Python 3.9
+      uses: actions/setup-python@v2
+      with: { python-version: '3.9' }
+    - shell: bash
+      run: pip install git+https://github.com/InfraBits/npmup.git@main
+    - uses: actions/checkout@v2
+    - shell: bash
+      run: |
+        if [ ! -z "${{ secrets.github-app-id }}" ];
+        then
+          npmup \
+          --merge \
+          --repository ${{ github.repository }} \
+          --github-app-id ${{ secrets.github-app-id }} \
+          --github-app-key ${{ secrets.github-app-key }}
+        else
+          npmup \
+          --merge \
+          --repository ${{ github.repository }}
+        fi
+      env:
+        GITHUB_TOKEN: ${{ secrets.github-access-token }}
