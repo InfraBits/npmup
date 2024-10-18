@@ -233,9 +233,9 @@ class Git:
                          headers=self._build_headers())
         r.raise_for_status()
 
-    def create_commit_comment(self, sha: str, comment: str) -> None:
+    def create_issue_comment(self, issue_number: int, comment: str) -> None:
         r = requests.post(f'https://api.github.com/repos/'
-                          f'{self.repository}/commits/{sha}/comments',
+                          f'{self.repository}/issues/{issue_number}/comments',
                           json={'body': comment},
                           headers=self._build_headers())
         r.raise_for_status()

@@ -122,8 +122,8 @@ def _merge(settings: Settings,
         else:
             logger.info(f'Closing failed pull request {pull_request_id}')
             try:
-                git.create_commit_comment(
-                    branch_sha,
+                git.create_issue_comment(
+                    pull_request_id,
                     f'Expected workflow ({", ".join(settings.workflows)}) failed'
                 )
             except Exception as e:
