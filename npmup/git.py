@@ -230,6 +230,7 @@ class Git:
     def merge_pull_request(self, pull_request_id: int) -> None:
         r = requests.put(f'https://api.github.com/repos/'
                          f'{self.repository}/pulls/{pull_request_id}/merge',
+                         json={'merge_method': 'rebase'},
                          headers=self._build_headers())
         r.raise_for_status()
 
